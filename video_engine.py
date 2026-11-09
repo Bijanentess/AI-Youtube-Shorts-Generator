@@ -62,8 +62,8 @@ def generate_procedural_background(output_path: str, duration: int = 45):
     ]
     subprocess.run(cmd, check=True)
 
-def vtt_to_ass(vtt_path: str, ass_path: str):
-    """Convert VTT subtitles to viral ASS style (Impact font, yellow text, bold black outline, centered)."""
+def srt_to_ass(srt_path: str, ass_path: str):
+    """Convert SRT subtitles to viral ASS style (Arial font, yellow text, bold black outline, centered)."""
     ass_header = """[Script Info]
 ScriptType: v4.00+
 PlayResX: 1080
@@ -76,7 +76,7 @@ Style: Default,Arial,68,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
-    subprocess.run(["ffmpeg", "-y", "-i", vtt_path, ass_path], check=True)
+    subprocess.run(["ffmpeg", "-y", "-i", srt_path, ass_path], check=True)
     with open(ass_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -126,7 +126,7 @@ def render_final_video(scenes: list, output_video: str = "final_short.mp4"):
         generate_procedural_background("merged_bg.mp4", duration=50)
 
     # Style subtitles
-    vtt_to_ass("subs.vtt", "subs.ass")
+    srt_to_ass("subs.srt", "subs.ass")
 
     # Combine video background, audio voiceover and burnt-in subtitles
     print("🎬 Merging audio, video and subtitles...")
